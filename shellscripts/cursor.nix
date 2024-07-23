@@ -1,8 +1,14 @@
 {pkgs, homeDir ? pkgs.lib.getHome} :
 pkgs.writeShellScriptBin "cursor" ''
+    # Create the Applications directory if it doesn't exist
+    applications_dir="${homeDir}/Applications"
+    if [[ ! -d "$applications_dir" ]]; then
+        mkdir -p "$applications_dir"
+    fi
+
     # Find the latest cursor AppImage in ~/Applications
     echo "Home Directory: ${homeDir}"
-    cursor_app="$(find ${homeDir}/Applications -maxdepth 1 -name 'cursor*.AppImage' | sort | tail -n 1)"
+    cursor_app="$(find ${applications_dir} -maxdepth 1 -name 'cursor*.AppImage' | sort | tail -n 1)"
     if [[ -f "$cursor_app" ]]; then
         # Execute the AppImage if found
         appimage-run "$cursor_app" "$@"
