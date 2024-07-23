@@ -12,7 +12,7 @@ let
 
     src = pkgs.fetchurl {
       url = "https://downloader.cursor.sh/linux/appImage/x64";
-      hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo=";
+      hash = "sha256-GFyJwPTITHqeWT5sISBUfCbJNR0nxCJ1k/38o+mm/F4=";
     };
   };
 in
