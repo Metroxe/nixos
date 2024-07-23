@@ -4,6 +4,18 @@
 
 { config, pkgs, ... }:
 
+let
+  # Fetch and wrap the latest cursor AppImage
+  cursorAppImage = pkgs.appimageTools.wrapType2 {
+    pname = "cursor";
+    version = "0.1.0";
+
+    src = pkgs.fetchurl {
+      url = "https://downloader.cursor.sh/linux/appImage/x64";
+      hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo=";
+    };
+  };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -94,19 +106,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # Fetch and wrap the latest cursor AppImage
-  let
-    cursorAppImage = pkgs.appimageTools.wrapType2 {
-      pname = "cursor";
-      version = "0.1.0";
-
-      src = pkgs.fetchurl {
-        url = "https://downloader.cursor.sh/linux/appImage/x64";
-        hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo=";
-      };
-    };
-  in
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
