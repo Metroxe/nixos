@@ -96,12 +96,9 @@
   nixpkgs.config.allowUnfree = true;
 
   # Fetch the latest cursor AppImage without specifying the hash
-  let
-    cursorAppImage = pkgs.fetchurl {
-      url = "https://downloader.cursor.sh/linux/appImage/x64";
-      // hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo="; // Hash is omitted
-    };
-  in
+  cursorAppImage = pkgs.fetchurl {
+    url = "https://downloader.cursor.sh/linux/appImage/x64";
+  };
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
