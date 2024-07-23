@@ -8,7 +8,7 @@ pkgs.writeShellScriptBin "cursor" ''
 
     # Find the latest cursor AppImage in ~/Applications
     echo "Home Directory: ${homeDir}"
-    cursor_app="$(find ${applications_dir} -maxdepth 1 -name 'cursor*.AppImage' | sort | tail -n 1)"
+    cursor_app="$(find $applications_dir -maxdepth 1 -name 'cursor*.AppImage' | sort | tail -n 1)"
     if [[ -f "$cursor_app" ]]; then
         # Execute the AppImage if found
         appimage-run "$cursor_app" "$@"
