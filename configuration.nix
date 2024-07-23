@@ -1,6 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# and in the NixOS manual (accessible by running 'nixos-help').
 
 { config, pkgs, ... }:
 
@@ -78,14 +78,16 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.dev = {
     isNormalUser = true;
     description = "dev";
     extraGroups = [ "networkmanager" "wheel" ];
+    home = "/home/dev"; # Ensure the home directory is set
     packages = with pkgs; [
     #  thunderbird
     ];
+    home.file."Applications".source = null; # Ensure ~/Applications directory exists
   };
 
   # Install firefox.
@@ -94,8 +96,14 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # Fetch the latest cursor AppImage without specifying the hash
+  let
+    cursorAppImage = pkgs.fetchurl {
+      url = "https://downloader.cursor.sh/linux/appImage/x64";
+      // hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo="; // Hash is omitted
+    };
+  in
+
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
@@ -103,6 +111,7 @@
     (pkgs.callPackage ./shellscripts/cursor.nix {
       inherit pkgs;
       homeDir = config.users.users.dev.home;
+      cursorAppImage;
     })
   ];
 
@@ -130,7 +139,7 @@
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
