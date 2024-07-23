@@ -101,8 +101,8 @@
   #  wget
     git
     (pkgs.callPackage ./shellscripts/cursor.nix {
-      # inherit pkgs;
-      homeDir = "${homeDir}";
+      inherit pkgs;
+      homeDir = config.users.users.dev.home;
     })
   ];
 
