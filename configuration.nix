@@ -87,7 +87,6 @@
     packages = with pkgs; [
     #  thunderbird
     ];
-    home.file."Applications".source = null; # Ensure ~/Applications directory exists
   };
 
   # Install firefox.
