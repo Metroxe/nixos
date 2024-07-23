@@ -95,26 +95,24 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Fetch the latest cursor AppImage with specified hash
-  cursorAppImage = pkgs.appimageTools.wrapType2 {
-    pname = "cursor";
-    version = "0.1.0";
+  # Fetch and wrap the latest cursor AppImage
+  let
+    cursorAppImage = pkgs.appimageTools.wrapType2 {
+      pname = "cursor";
+      version = "0.1.0";
 
-    src = pkgs.fetchurl {
-      url = "https://downloader.cursor.sh/linux/appImage/x64";
-      hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo=";
+      src = pkgs.fetchurl {
+        url = "https://downloader.cursor.sh/linux/appImage/x64";
+        hash = "sha256-Fsy9OVP4vryLHNtcPJf0vQvCuu4NEPDTN2rgXO3Znwo=";
+      };
     };
-  };
+  in
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
     git
-    (pkgs.callPackage ./shellscripts/cursor.nix {
-      inherit pkgs;
-      homeDir = config.users.users.dev.home;
-      cursorAppImage;
-    })
+    cursorAppImage
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
